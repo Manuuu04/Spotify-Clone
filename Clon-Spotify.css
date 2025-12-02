@@ -1,20 +1,26 @@
+body{
+    background-color: black;
+}
+
 .sidebar {
     width: 379px;
     transition: width .4s;
-    overflow: hidden;
+    overflow-x: hidden;
     background-color: #121212;
-    color: azure;
+    color: white;
     border-radius: 9px;
+    height: 100%;
+    position: fixed;
 }
 
 .library {
-    color: aliceblue;
+    font-family: "Roboto", sans-serif;
+    color: white;
     background-color: transparent;
     padding: 10px 20px; /* espacio interno */
     font-size: large;
     border: none;
     white-space: nowrap;
-    
 }
 
 .library.short{
@@ -23,7 +29,8 @@
 }
 
 .sidebar .text{
-    color: azure;
+    font-family: "Roboto", sans-serif;
+    color: white;
     border: 1;
     background-color: #ffffff1a;
     border-color: transparent;
@@ -50,7 +57,7 @@
 }
 
 .sidebar.short {
-    width: 70px;
+    width: 80px;
 }
 
 
@@ -69,6 +76,8 @@
 }
 
 .text.add{
+    font-family: "Roboto", sans-serif;
+    font-size: 13px;
     justify-content: flex-end;
     margin-left: 90px;
 }
@@ -124,4 +133,44 @@
 .text.browser{
     background-color: transparent;
     font-size: large;
+}
+
+.sidebar-container{
+    align-items: center;
+    margin-inline: 10px;
+}
+
+
+.container{
+    display: flex;
+}
+
+.container:hover{
+    border-radius: 8px;
+    background-color: #ffffff4f;
+    cursor: pointer;
+}
+
+.content{
+    padding: 0px 10px;
+}
+
+
+img{
+    border-radius: 5px;
+    margin-left: 10px;
+    margin-top: 9px;
+}
+
+.h3{
+    font-family: "Roboto", sans-serif;
+    margin-top: 11px;
+    
+}
+
+p{
+    font-family: "Roboto", sans-serif;
+    margin-top: -14px;
+    color: rgb(175, 175, 175);
+    margin-bottom: 11px;
 }
