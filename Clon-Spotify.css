@@ -4,7 +4,6 @@ body{
 
 .sidebar {
     width: 379px;
-    transition: width .4s;
     overflow-x: hidden;
     background-color: #121212;
     color: white;
@@ -24,8 +23,20 @@ body{
 }
 
 .library.short{
-    width: 70px;
-    height: 70px;
+    justify-content: center;
+    text-align: center;
+    display: flex;
+    cursor: pointer;
+    padding: 18px 21px;
+    margin-left: 10px;
+    margin-top: 10px;
+    background-color: rgb(32, 32, 32);
+    border-radius: 8px;
+}
+.library.short:hover{
+    background-color: gray;
+    border-radius: 8px;
+    background-color: #ffffff4f;
 }
 
 .sidebar .text{
@@ -57,7 +68,7 @@ body{
 }
 
 .sidebar.short {
-    width: 80px;
+    width: 84.5px;
 }
 
 
@@ -124,6 +135,10 @@ body{
     white-space: nowrap;
 }
 
+.recent.short{
+    display: none;
+}
+
 .recent:hover{
     color:white;
     font-size: large;
@@ -173,4 +188,19 @@ p{
     margin-top: -14px;
     color: rgb(175, 175, 175);
     margin-bottom: 11px;
+}
+
+.container .image.short {
+    justify-content: center;
+    text-align: center;
+    display: flex;
+    margin: 7px;
+}
+
+.content.short{
+    display: none;
+}
+
+.buttons-header.short{
+    display: none;
 }

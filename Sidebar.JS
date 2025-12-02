@@ -1,15 +1,17 @@
 const sidebar = document.getElementById('sidebar');
-const btnLibrary = document.getElementById('library');
-const book = document.getElementById('icon');
-const body = document.getElementById('body');
-const btnBrowser = document.getElementById('browser');
-const sidebarContainer = document.getElementById('sidebar-container');
-const content = document.getElementById('content');
 const audio = document.getElementById('audio');
+const sidebarContainer = document.getElementById('sidebar-container');
+const btnLibrary = document.getElementById('library');
+const btnBrowser = document.getElementById('browser');
+const btnPlaylist = document.getElementById('btnplaylist');
+const btnAlbums = document.getElementById('btnAlbums');
+const btnRecent = document.getElementById('recent');
+const content = document.querySelectorAll('.content');
 const images = document.getElementById('image');
-const h3Id = document.getElementById('h3')
-const paragraph = document.getElementById('paragraph')
-const container = document.getElementById('container')
+const h3Id = document.getElementById('h3');
+const paragraph = document.getElementById('paragraph');
+const buttonsHeader = document.getElementById('buttons-header');
+
 
 
 let playlist = [
@@ -56,18 +58,36 @@ let playlist = [
 }
 ];
 
-let short = false
 
 images.addEventListener('mouseenter', function(){
-
-
+    
+    
 })
 
+let short = false
+
 function libraryEfects(list) {
+    if (sidebarContainer.children[0].className === 'not-find') {
+        sidebarContainer.innerHTML = ''
+        playlistsGenerator();
+    }
+
+    const images = document.querySelectorAll('.image');
+
+    images.forEach(c => {
+        c.classList.toggle('short');
+    });
+
+    const contents = document.querySelectorAll('.content');
+
+    contents.forEach(c => {
+        c.classList.toggle('short');
+    });
 
     sidebar.classList.toggle('short');
     btnLibrary.classList.toggle('short');
-
+    btnRecent.classList.toggle('short');
+    buttonsHeader.classList.toggle('short')
 
     if (!short) {
 
@@ -102,6 +122,7 @@ function playlistsGenerator(params) {
         const div = document.createElement('div');
         const div2 = document.createElement('div');
         
+        image.className = 'image'
         image.src = img;
         h3.textContent = nombre
         h3.className = 'h3'
@@ -115,7 +136,7 @@ function playlistsGenerator(params) {
         div2.appendChild(h3);
         div2.appendChild(p);
 
-        div.addEventListener('click', function(){
+        div.addEventListener('dblclick', function(){
         audio.src = link;
         audio.play();
         })
@@ -123,25 +144,26 @@ function playlistsGenerator(params) {
     
 };
 
-let inputOn = false
+
 
 playlistsGenerator();
 
 btnBrowser.addEventListener('click', browserInput);
 
 
+
+//Browser function
+let browserInputElement = null;
 function browserInput() {
+
+    if (browserInputElement) return;
+
     const input = document.createElement('input');
     input.placeholder = 'Type to apply filters';
     input.className = 'input-normal';
 
-    if (inputOn) {
-        return;
-    } else {
         btnBrowser.appendChild(input);
-        inputOn = true
-    }
-
+        browserInputElement = input;
 
 
  input.addEventListener('input', function () {
@@ -164,9 +186,10 @@ function browserInput() {
 
     if (resultados.length === 0) {
         const msg = document.createElement('p');
-        msg.textContent = 'No matching results';
+        msg.textContent = `Cant find "${input.value}"`;
         msg.style.color = 'gray';
         msg.style.margin = '20px';
+        msg.className = 'not-find'
         sidebarContainer.appendChild(msg);
         return;
     }
@@ -196,11 +219,138 @@ function browserInput() {
         div2.appendChild(h3);
         div2.appendChild(p);
 
-        div.addEventListener('click', function(){
+
+        div.addEventListener('dblclick', function(){
             audio.src = link;
             audio.play();
-        })
+        });
     });
 });
 
 }
+
+
+document.addEventListener('click', function(e) {
+
+    if (!browserInputElement) return;
+
+    
+    if (btnBrowser.contains(e.target) || browserInputElement.contains(e.target) || btnLibrary.contains(e.target)) {
+        
+        return;
+
+    }
+    sidebarContainer.innerHTML = ''
+    playlistsGenerator();
+    browserInputElement.remove();
+    browserInputElement = null;
+});
+
+let playListOn = false
+
+btnPlaylist.addEventListener('click', function () {
+    const resultados = playlist.filter(song => {
+        const playList = song.type
+        
+        return(playList === 'Playlist')
+    });
+
+    if (playListOn) {
+        playlistsGenerator();
+        playListOn = false
+        return;
+    }
+
+    sidebarContainer.innerHTML = ''
+
+    
+
+    resultados.forEach(song => {
+        
+        const {nombre, img, link, type, artist} = song;
+
+        const image = document.createElement('img');
+        const h3 = document.createElement('h3');
+        const p = document.createElement('p');
+        const div = document.createElement('div');
+        const div2 = document.createElement('div');
+
+        image.src = img;
+        h3.textContent = nombre;
+        p.textContent = `${type} ● ${artist}`;
+
+        image.className = 'image';
+        div.className = 'container';
+        div2.className = 'content';
+        h3.className = 'h3';
+        div2.className = 'content'; 
+
+
+        sidebarContainer.appendChild(div);
+        div.appendChild(image);
+        div.appendChild(div2);
+        div2.appendChild(h3);
+        div2.appendChild(p);
+
+        div.addEventListener('dblclick', function(){
+        audio.src = link;
+        audio.play();
+        });
+    })
+    playListOn = true
+});
+
+let albumListOn = false
+
+btnAlbums.addEventListener('click', function () {
+        const resultados = playlist.filter(song => {
+        const album = song.type
+        
+        return(album === 'Album')
+    });
+    sidebarContainer.innerHTML = ''
+
+    if (albumListOn) {
+        playlistsGenerator();
+        albumListOn = false
+        return;
+    }
+
+
+    
+    if (!albumListOn) {
+    
+        resultados.forEach(song => {
+            
+            const {nombre, img, link, type, artist} = song;
+    
+            const image = document.createElement('img');
+            const h3 = document.createElement('h3');
+            const p = document.createElement('p');
+            const div = document.createElement('div');
+            const div2 = document.createElement('div');
+    
+            image.src = img;
+            h3.textContent = nombre;
+            p.textContent = `${type} ● ${artist}`;
+    
+            div.className = 'container';
+            div2.className = 'content';
+            h3.className = 'h3';
+            div2.className = 'content'; 
+    
+    
+            sidebarContainer.appendChild(div);
+            div.appendChild(image);
+            div.appendChild(div2);
+            div2.appendChild(h3);
+            div2.appendChild(p);
+    
+            div.addEventListener('dblclick', function(){
+            audio.src = link;
+            audio.play();
+            });
+        })
+        albumListOn = true
+}
+})
