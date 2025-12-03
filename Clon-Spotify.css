@@ -4,12 +4,30 @@ body{
 
 .sidebar {
     width: 379px;
+    position: fixed;
     overflow-x: hidden;
     background-color: #121212;
     color: white;
     border-radius: 9px;
-    height: 100%;
-    position: fixed;
+    height: 87%;
+    overflow-y: auto;  
+}
+
+.sidebar::-webkit-scrollbar{
+    width: 5px;
+}
+
+#sidebar::-webkit-scrollbar-track {
+    background: transparent;   
+    border-radius: 10px;
+}
+
+#sidebar::-webkit-scrollbar-thumb {
+    background: transparent;
+}
+
+#sidebar:hover::-webkit-scrollbar-thumb {
+    background: #ffffff50;
 }
 
 .library {
@@ -68,7 +86,7 @@ body{
 }
 
 .sidebar.short {
-    width: 84.5px;
+    width: 89.5px;
 }
 
 
@@ -183,7 +201,7 @@ img{
     
 }
 
-p{
+.sidebar-container p{
     font-family: "Roboto", sans-serif;
     margin-top: -14px;
     color: rgb(175, 175, 175);
@@ -203,4 +221,109 @@ p{
 
 .buttons-header.short{
     display: none;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 97.6%;
+    height: 50px;       /* o lo que tú quieras */
+    background: black;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    z-index: 1000;      /* para que quede arriba de todo */
+}
+
+.song {
+    display: flex;
+}
+
+
+
+.footer img{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 0;
+    width: 55px;
+    height: 55px;
+    border-radius: 8px;
+}
+
+.footer .text{
+    margin-left: 20px;
+    font-family: 'Roboto', sans-serif;
+    color: white;
+}
+
+.footer h3{
+    font-size: medium;
+    margin-top: 20px;
+    margin-bottom: 0;
+}
+
+.footer p{
+    font-size: small;
+    margin-top: 0;
+    color: gray;
+}
+
+footer .reproducer{
+    align-items: center;
+    display: table-column;
+
+}
+
+footer .reproducer button{
+    background-color: transparent;
+    color: rgb(199, 199, 199);
+    border: none;
+    font-size: x-large;
+    margin-inline: 10px;
+    cursor: pointer;
+}
+
+footer .reproducer .play{
+    font-size: xx-large;
+    color: black;
+
+}
+
+footer .reproducer button:hover{
+    transition: all .3s;
+    color: white;
+    text-shadow: 1px 1px 5px white;
+}
+
+.time-bar{
+    width: 380px;
+
+}
+
+.time-bar::-webkit-scrollbar-track{
+    background-color: red;
+}
+
+input[type="range"] {
+    -webkit-appearance: none;
+    height: 4px;
+    border-radius: 4px;
+    background: #555;
+    outline: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 12px;
+    height: 12px;
+    background: white;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+input[type="range"]:hover::-webkit-slider-thumb {
+    transform: scale(1.2);
+    background: #1db954;
 }
