@@ -29,7 +29,7 @@ let playlist = [
     nombre: 'Your Likes',
     img: '/assets/img/yourlikes.jpg',
     type: 'Playlist',
-    artist: '711 songs'
+    artist: '711 songs',
 },    
 {
     nombre: 'Callaita',
@@ -74,12 +74,6 @@ images.addEventListener('mouseenter', function(){
     
 })
 
-function ids() {
-    for (const i of playlist) {
-        playlist[i]['id'] = i
-        
-    }
-};
 
 
 let short = false
@@ -127,7 +121,7 @@ function libraryEfects(list) {
 btnLibrary.addEventListener('click', libraryEfects);
 
 
-
+//Sidebar playlist generator
 
 function playlistsGenerator(params) {
     playlist.forEach(n =>{
@@ -155,7 +149,8 @@ function playlistsGenerator(params) {
         div2.appendChild(p);
 
         div.addEventListener('dblclick', function(){
-        
+        btnPlay.textContent = '⏸️'
+
         singers.textContent = artist
         h3Rep.textContent = nombre;
         repImage.src = img;
@@ -245,7 +240,14 @@ function browserInput() {
 
 
         div.addEventListener('dblclick', function(){
+
+            btnPlay.textContent = '⏸️'
+            
             repImage.src = img;
+            singers.textContent = artist
+            h3Rep.textContent = nombre;
+            repImage.src = img;
+            
             audio.src = link;
             audio.play();
         });
@@ -254,19 +256,23 @@ function browserInput() {
 
 }
 
+//global event
 
 document.addEventListener('click', function(e) {
+
 
     if (!browserInputElement) return;
 
     
-    if (btnBrowser.contains(e.target) || browserInputElement.contains(e.target) || btnLibrary.contains(e.target)) {
+    if (btnBrowser.contains(e.target) || browserInputElement.contains(e.target) || btnLibrary.contains(e.target) || e.target.closest('.container')) {
         
         return;
 
     }
+    
     sidebarContainer.innerHTML = ''
     playlistsGenerator();
+
     browserInputElement.remove();
     browserInputElement = null;
 });
@@ -324,6 +330,7 @@ btnPlaylist.addEventListener('click', function () {
             div2.appendChild(p);
             
             div.addEventListener('dblclick', function(){
+                btnPlay.textContent = '⏸️'
                 audio.src = link;
                 audio.play();
             });
@@ -384,6 +391,7 @@ btnAlbums.addEventListener('click', function () {
             div2.appendChild(p);
     
             div.addEventListener('dblclick', function(){
+            btnPlay.textContent = '⏸️'
             audio.src = link;
             audio.play();
             });
@@ -408,11 +416,49 @@ function reproducer() {
 
 btnPlay.addEventListener('click', reproducer)
 
+
+
 function nextSong() {
-    const result = playlist.filter(song => audio.src.includes(song.link))
+    const result = playlist.filter(song => audio.src.includes(song.link))[0]
+
+    const index = playlist.findIndex(song => song.nombre === result.nombre);
+
+    if (index >= playlist.length - 1 ) return;
 
 
+    const next = playlist[index + 1];
+    const {nombre, img, artist} = next;
+
+    repImage.src = img;
+    h3Rep.textContent = nombre;
+    singers.textContent = artist
+
+
+
+    audio.src = next.link;
+    audio.play();
+}
+
+
+function previousSong() {
+    const result = playlist.filter(song => audio.src.includes(song.link))[0];
+    
+    const index = playlist.findIndex(song => song.nombre === result.nombre);
+
+    if (index <= 0 || playlist[index - 1].type === 'Playlist') return;
+
+    const previous = playlist[index - 1];
+
+    const {nombre, img, artist} = previous;
+
+    repImage.src = img;
+    h3Rep.textContent = nombre;
+    singers.textContent = artist;
+
+    audio.src = previous.link;
+    audio.play();
 }
 
 btnNext.addEventListener('click', nextSong)
 
+btnPrevious.addEventListener('click',  previousSong)
