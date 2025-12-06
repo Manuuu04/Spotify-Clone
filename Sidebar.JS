@@ -2,6 +2,7 @@
 
 const sidebar = document.getElementById('sidebar');
 const audio = document.getElementById('audio');
+const header = document.getElementById('header')
 const sidebarContainer = document.getElementById('sidebar-container');
 const btnLibrary = document.getElementById('library');
 const btnBrowser = document.getElementById('browser');
@@ -30,6 +31,43 @@ let playlist = [
     img: '/assets/img/yourlikes.jpg',
     type: 'Playlist',
     artist: '711 songs',
+    songsList: [
+        {
+    nombre: 'Callaita',
+    img: '/assets/img/callaita.jpg',
+    link: '/assets/music/Callaita.mp3',
+    type: 'Album',
+    artist: 'Bad Bunny'
+},
+{
+    nombre: 'Columbia',
+    img: '/assets/img/columbia.jpg',
+    link: '/assets/music/Columbia.mp3',
+    type: 'Sencillo',
+    artist: 'Quevedo'
+},
+{
+    nombre: 'Danzakuduro',
+    img: '/assets/img/danzakuduro.jpg',
+    link: '/assets/music/Danzakuduro.mp3',
+    type: 'Album',
+    artist: 'Don Omar'
+},
+{
+    nombre: 'Deportivo',
+    img: '/assets/img/deportivo.jpg',
+    link: '/assets/music/Deportivo.mp3',
+    type: 'Sencillo',
+    artist: 'Anuel AA y Blessed'
+},
+{
+    nombre: 'Verte ir',
+    img: '/assets/img/verte-ir.jpg',
+    link: '/assets/music/Verte-ir.mp3',
+    type: 'Sencillo',
+    artist: 'Anuel AA y Mabo Kingz'  
+}
+    ]
 },    
 {
     nombre: 'Callaita',
@@ -244,7 +282,7 @@ function browserInput() {
             btnPlay.textContent = '⏸️'
             
             repImage.src = img;
-            singers.textContent = artist
+            singers.textContent = artist;
             h3Rep.textContent = nombre;
             repImage.src = img;
             
@@ -264,7 +302,7 @@ document.addEventListener('click', function(e) {
     if (!browserInputElement) return;
 
     
-    if (btnBrowser.contains(e.target) || browserInputElement.contains(e.target) || btnLibrary.contains(e.target) || e.target.closest('.container')) {
+    if (btnBrowser.contains(e.target) || browserInputElement.contains(e.target) || btnLibrary.contains(e.target) || e.target.closest('.container') || browserInputElement.value.length) {
         
         return;
 
@@ -282,10 +320,12 @@ let playListOn = false
 btnPlaylist.addEventListener('click', function () {
 
     const resultados = playlist.filter(song => {
-        const playList = song.type
+        const playList = song.type;
         
         return(playList === 'Playlist')
     });
+
+    sidebarContainer.innerHTML = '';
 
     if (playListOn) {
         btnPlaylist.style.backgroundColor = '#ffffff1a';
@@ -330,7 +370,7 @@ btnPlaylist.addEventListener('click', function () {
             div2.appendChild(p);
             
             div.addEventListener('dblclick', function(){
-                btnPlay.textContent = '⏸️'
+                btnPlay.textContent = '⏸️';
                 audio.src = link;
                 audio.play();
             });
@@ -343,11 +383,11 @@ let albumListOn = false
 
 btnAlbums.addEventListener('click', function () {
         const resultados = playlist.filter(song => {
-        const album = song.type
+        const album = song.type;
         
         return(album === 'Album')
     });
-    sidebarContainer.innerHTML = ''
+    sidebarContainer.innerHTML = '';
 
     if (albumListOn) {
         playlistsGenerator();
@@ -391,13 +431,21 @@ btnAlbums.addEventListener('click', function () {
             div2.appendChild(p);
     
             div.addEventListener('dblclick', function(){
-            btnPlay.textContent = '⏸️'
+            btnPlay.textContent = '⏸️';
             audio.src = link;
             audio.play();
             });
         })
         albumListOn = true;
 }
+})
+
+sidebar.addEventListener('scroll', function() {
+    if (sidebar.scrollTop > 5) {
+        header.classList.add('scrolled');
+    } else {
+        header.classList.remove('scrolled');
+    }
 })
 
 //Reproductor 
@@ -419,7 +467,7 @@ btnPlay.addEventListener('click', reproducer)
 
 
 function nextSong() {
-    const result = playlist.filter(song => audio.src.includes(song.link))[0]
+    const result = playlist.filter(song => audio.src.includes(song.link))[0];
 
     const index = playlist.findIndex(song => song.nombre === result.nombre);
 
@@ -431,7 +479,7 @@ function nextSong() {
 
     repImage.src = img;
     h3Rep.textContent = nombre;
-    singers.textContent = artist
+    singers.textContent = artist;
 
 
 
@@ -459,6 +507,43 @@ function previousSong() {
     audio.play();
 }
 
-btnNext.addEventListener('click', nextSong)
+btnNext.addEventListener('click', nextSong);
 
-btnPrevious.addEventListener('click',  previousSong)
+btnPrevious.addEventListener('click',  previousSong);
+
+let repeat = false
+
+let random = false
+
+function repeatSong() {
+    if(repeat){
+        repeat = false;
+        btnRepeat.style.color = 'white';
+    } else {
+        btnRepeat.style.color = '#1db954';
+        repeat = true;
+    }
+}
+
+btnRepeat.addEventListener('click', repeatSong);
+
+
+
+audio.addEventListener('ended', function () {
+    if(repeat){
+        audio.play();
+    } else if(random){
+        let randomPlay = playlist[Math.floor(Math.random() * playlist.length)].link;
+        audio.src = randomPlay;
+    } else{
+        nextSong();
+    }
+});
+
+btnRepeat.addEventListener('click', function(){
+    if (random) {
+        random = false;
+    } else {
+        random = true;
+    }
+})

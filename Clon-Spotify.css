@@ -287,8 +287,7 @@ footer .reproducer button{
 
 footer .reproducer .play{
     font-size: xx-large;
-    color: black;
-
+    color: white;
 }
 
 footer .reproducer button:hover{
@@ -326,4 +325,18 @@ input[type="range"]::-webkit-slider-thumb {
 input[type="range"]:hover::-webkit-slider-thumb {
     transform: scale(1.2);
     background: #1db954;
+}
+
+
+.sidebar .header {
+    position: sticky;
+    top: 0;
+    padding-bottom: 10px;
+    background-color: #121212;   /* O el color que tenga tu sidebar */
+    z-index: 10;
+    transition: box-shadow .3s ease;
+}
+
+.sidebar .header.scrolled {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.712);
 }
