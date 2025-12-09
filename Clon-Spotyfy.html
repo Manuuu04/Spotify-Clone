@@ -8,7 +8,27 @@
         <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     </head>
     <body id="body">
-        <audio id="audio" src=""></audio>
+        <audio id="audio" src="/assets/music/Callaita.mp3"></audio>
+        <header id="topbar">
+
+            <div class="topbar-left">
+                <button>←</button>
+                <button>→</button>
+
+                <div id="topbar-search" class="topbar-search">
+                    <input id="browser-top" type="text" placeholder="Search music, artists, albums...">
+                    <div id="top-search-results" class="search-results">
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="topbar-right">
+                <button>Upgrade</button>
+                <button>User 👤</button>
+            </div>
+
+        </header>
         
         <div id="sidebar" class="sidebar">
         
@@ -32,7 +52,7 @@
                 
                     <button id="btnAlbums" class="text">Albums</button>
                 
-                    <button id="btnPodcast&Shows" class="text">Podcast and Shows</button>
+                    
                 </div>
 
             </header>
@@ -45,17 +65,23 @@
         
             <div id="sidebar-container" class="sidebar-container">
                 <div id="container" class="container">
-                    <img id="image" class="image" src="/assets/img/yourlikes.jpg" alt="">
-                    <div class="content">
-                        <h3 id="h3" class="h3">Your Likes</h3>
-                        <p id="paragraph" class="paragraph">Playlist  ● 711 songs</p>
-                    </div>
+        
                 </div>
             </div>
         </div>
 
         <div id="center" class="center">
-            <p>hola</p>
+            <div id="center-content" class="center-content">
+                <img id="header-image" src="/assets/img/flecha.png" alt="">
+                <div>
+                    <h4 id="h4-header"></h4>
+                    <h1 id="h1-header">Click any one</h1>
+                    <p id="p-header"></p>
+                </div>
+            </div>
+            <div id="center-section" class="center-section">
+                
+            </div>
         </div>
 
         <footer id="footer" class="footer">
@@ -73,7 +99,9 @@
                 <button id="next" class="next">►►</button>
                 <button id="repeat" class="repeat">↺</button>
                 <div id="reproducer-bar">
-                    <input class="time-bar" type="range">
+                    <span id="current-time" class="current-time">0:00</span>
+                    <input id="time-bar" class="time-bar" type="range">
+                    <span id="duration" class="duration">4:11</span>
                 </div>
             </div>
             <div id="footer-btns">

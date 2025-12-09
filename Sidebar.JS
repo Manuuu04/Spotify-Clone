@@ -23,6 +23,21 @@ const btnPlay = document.getElementById('play');
 const btnPrevious = document.getElementById('previous');
 const btnNext = document.getElementById('next');
 const btnRepeat = document.getElementById('repeat');
+const btnRandom = document.getElementById('random');
+const currentTime = document.getElementById('current-time');
+const totalDuration = document.getElementById('duration');
+const timeBar = document.getElementById('time-bar');
+
+//center seciton⬇️
+const centerSection = document.getElementById('center');
+const centerSongList = document.getElementById('center-songlist');
+const centerSectionList = document.getElementById('center-section');
+const centerContent = document.getElementById('center-content');
+const centerImageHeader = document.getElementById('header-image');
+const centerH4Header = document.getElementById('h4-header');
+const centerH1Header = document.getElementById('h1-header');
+const centerPHeader = document.getElementById('p-header');
+
 
 
 let playlist = [
@@ -31,6 +46,7 @@ let playlist = [
     img: '/assets/img/yourlikes.jpg',
     type: 'Playlist',
     artist: '711 songs',
+    background: '#5f33ffff',
     songsList: [
         {
     nombre: 'Callaita',
@@ -74,49 +90,83 @@ let playlist = [
     img: '/assets/img/callaita.jpg',
     link: '/assets/music/Callaita.mp3',
     type: 'Album',
-    artist: 'Bad Bunny'
+    artist: 'Bad Bunny',
+    background: '#ffa724ff'
+
 },
 {
     nombre: 'Columbia',
     img: '/assets/img/columbia.jpg',
     link: '/assets/music/Columbia.mp3',
     type: 'Sencillo',
-    artist: 'Quevedo'
+    artist: 'Quevedo',
+    background: '#ffaf36'
 },
 {
     nombre: 'Danzakuduro',
     img: '/assets/img/danzakuduro.jpg',
     link: '/assets/music/Danzakuduro.mp3',
     type: 'Album',
-    artist: 'Don Omar'
+    artist: 'Don Omar',
+    background: '#9b1a1a'
 },
 {
     nombre: 'Deportivo',
     img: '/assets/img/deportivo.jpg',
     link: '/assets/music/Deportivo.mp3',
     type: 'Sencillo',
-    artist: 'Anuel AA y Blessed'
+    artist: 'Anuel AA y Blessed',
+    background: '#a30000ff'
 },
 {
     nombre: 'Verte ir',
     img: '/assets/img/verte-ir.jpg',
     link: '/assets/music/Verte-ir.mp3',
     type: 'Sencillo',
-    artist: 'Anuel AA y Mabo Kingz'  
-}
+    artist: 'Anuel AA y Mabo Kingz',
+    background: '#00a581'
+},
+
+
+{
+    nombre: 'Amanecio',
+    img: '/assets/img/amanecio.jpg',
+    link: '/assets/music/Amanecio.mp3',
+    type: 'Album',
+    artist: 'Quevedo, De La Rose, De La...',
+    background: '#636363ff'
+},
+{
+    nombre: 'Gyal you a party animal Remix',
+    img: '/assets/img/Gyal-you-a-party.jpg',
+    link: '/assets/music/GyalYouAPartyAnimalRemix.mp3',
+    type: 'Sencillo',
+    artist: 'Charly black, Daddy Yankee',
+    background: 'red'
+},
+{
+    nombre: 'Kloufrens',
+    img: '/assets/img/kloufrens.jpg',
+    link: '/assets/music/Kloufrens.mp3',
+    type: 'Album',
+    artist: 'Bad Bunny',
+    background: '#405820FF'
+},
+{
+    nombre: 'La plena',
+    img: '/assets/img/laplena.jpg',
+    link: '/assets/music/Laplena.mp3',
+    type: 'Sencillo',
+    artist: 'Beele y Wsound',
+    background: '#d64106ff'  
+},
 ];
-
-
-images.addEventListener('mouseenter', function(){
-    
-    
-})
 
 
 
 let short = false
 
-function libraryEfects(list) {
+function libraryEfects() {
     if (sidebarContainer.children[0].className === 'not-find') {
         sidebarContainer.innerHTML = ''
         playlistsGenerator();
@@ -137,18 +187,18 @@ function libraryEfects(list) {
     sidebar.classList.toggle('short');
     btnLibrary.classList.toggle('short');
     btnRecent.classList.toggle('short');
-    buttonsHeader.classList.toggle('short')
+    buttonsHeader.classList.toggle('short');
 
     if (!short) {
 
         btnLibrary.textContent = '🕮';
-
+        centerSection.style.marginLeft = '96px'
         short = true;
 
     } else {
 
         btnLibrary.textContent = 'Your library';
-
+        centerSection.style.marginLeft = '380px'
 
         short = false;
     }
@@ -158,13 +208,23 @@ function libraryEfects(list) {
 
 btnLibrary.addEventListener('click', libraryEfects);
 
+//function to get minutes and seconds of audio
+
+function formatDuration(a) {
+  const minutes = Math.floor(a / 60);
+  const seconds = Math.floor(a % 60);
+  const formattedSeconds = seconds < 10 ? '0' + seconds : seconds;
+  return `${minutes}:${formattedSeconds}`; 
+}
+
+
 
 //Sidebar playlist generator
 
 function playlistsGenerator(params) {
-    playlist.forEach(n =>{
+    playlist.forEach((n, i) =>{
         
-        const  {nombre, img, type, artist, link} = n;
+        const  {nombre, img, type, artist, link, background} = n;
         
         const image = document.createElement('img');
         const h3 = document.createElement('h3');
@@ -187,19 +247,184 @@ function playlistsGenerator(params) {
         div2.appendChild(p);
 
         div.addEventListener('dblclick', function(){
-        btnPlay.textContent = '⏸️'
+            audio.src = link;
 
-        singers.textContent = artist
-        h3Rep.textContent = nombre;
-        repImage.src = img;
+        audio.addEventListener('loadedmetadata', function handler() {
         
-        audio.src = link;
-        audio.play();
+            let songDuration = Math.floor(audio.duration);
+            totalDuration.textContent = `${formatDuration(songDuration)}`;
+        
+            audio.removeEventListener('loadedmetadata', handler);
+        });
+            btnPlay.textContent = '⏸️';
+            
+            singers.textContent = artist
+            h3Rep.textContent = nombre;
+            repImage.src = img;
+            
+            audio.play();
+            
+            
         })
+
+                  
+    div.addEventListener('click', function () {
+        console.log(background)
+        centerSectionList.innerHTML = ""; 
+        centerSectionList.classList.add('songs'); // conecta con CSS .songs
+        centerImageHeader.src = img;
+        centerH4Header.textContent = type;
+        centerH1Header.textContent = nombre;
+        centerPHeader.textContent = artist;
+        centerContent.style.background = background;
+        
+
+        if (n.songsList) {
+            n.songsList.forEach((song, i) => {
+    
+            const { nombre, img, artist, type, link } = song;
+    
+            const row = document.createElement('div');
+            row.className = "center-songlist";
+    
+    
+            const songDiv = document.createElement('div');
+            songDiv.className = "song";
+    
+    
+            const index = document.createElement('h1');
+            const cover = document.createElement('img');
+            const details = document.createElement('div');
+            const title = document.createElement('h4');
+            const artists = document.createElement('p');
+            const album = document.createElement('h3');
+            const timeAgo = document.createElement('h3');
+            const duration = document.createElement('p');
+    
+            timeAgo.className = 'h3-center'
+            album.className = 'h3-center'
+            duration.className = 'duration';
+    
+            details.className = "song-details";
+    
+            index.textContent = i + 1;
+            cover.src = img;
+            title.textContent = nombre;
+            artists.textContent = artist;
+            album.textContent = type;
+            timeAgo.textContent = "Hace 20 horas";
+            duration.textContent = "3:20";
+    
+            centerSectionList.appendChild(row);
+            row.appendChild(songDiv);
+    
+            songDiv.appendChild(index);
+            songDiv.appendChild(cover);
+            songDiv.appendChild(details);
+    
+            details.appendChild(title);
+            details.appendChild(artists);
+    
+            songDiv.appendChild(album);
+            songDiv.appendChild(timeAgo);
+            songDiv.appendChild(duration);
+
+            songDiv.addEventListener('dblclick', function(){
+                btnPlay.textContent = '⏸️';
+
+                audio.addEventListener('loadedmetadata', function handler() {
+        
+                let songDuration = Math.floor(audio.duration);
+                totalDuration.textContent = `${formatDuration(songDuration)}`;
+        
+                audio.removeEventListener('loadedmetadata', handler);
+                });
+            
+                singers.textContent = artist
+                h3Rep.textContent = nombre;
+                repImage.src = img;
+            
+                audio.src = link;
+                audio.play();
+            })
+    
+        });
+        } else {
+            
+            const { nombre, img, artist, type, link } = n;
+            console.log(nombre)
+            const row = document.createElement('div');
+            row.className = "center-songlist";
+    
+    
+            const songDiv = document.createElement('div');
+            songDiv.className = "song";
+    
+    
+            const index = document.createElement('h1');
+            const cover = document.createElement('img');
+            const details = document.createElement('div');
+            const title = document.createElement('h4');
+            const artists = document.createElement('p');
+            const album = document.createElement('h3');
+            const timeAgo = document.createElement('h3');
+            const duration = document.createElement('p');
+    
+            timeAgo.className = 'h3-center'
+            album.className = 'h3-center'
+            duration.className = 'duration';
+    
+            details.className = "song-details";
+    
+            index.textContent = 1;
+            cover.src = img;
+            title.textContent = nombre;
+            artists.textContent = artist;
+            album.textContent = type;
+            timeAgo.textContent = "Hace 20 horas";
+            duration.textContent = "3:20";
+    
+            centerSectionList.appendChild(row);
+            row.appendChild(songDiv);
+    
+            songDiv.appendChild(index);
+            songDiv.appendChild(cover);
+            songDiv.appendChild(details);
+    
+            details.appendChild(title);
+            details.appendChild(artists);
+    
+            songDiv.appendChild(album);
+            songDiv.appendChild(timeAgo);
+            songDiv.appendChild(duration);
+
+
+
+            songDiv.addEventListener('dblclick', function(){
+                btnPlay.textContent = '⏸️';
+
+                audio.addEventListener('loadedmetadata', function handler() {
+        
+                let songDuration = Math.floor(audio.duration);
+                totalDuration.textContent = `${formatDuration(songDuration)}`;
+        
+                audio.removeEventListener('loadedmetadata', handler);
+                });
+            
+                singers.textContent = artist
+                h3Rep.textContent = nombre;
+                repImage.src = img;
+            
+                audio.src = link;
+                audio.play();
+            })
+        }
+
+});
+        
     })
     
 };
-
 
 
 playlistsGenerator();
@@ -251,7 +476,7 @@ function browserInput() {
     }
 
     resultados.forEach(song => {
-        const {nombre, img, link, type, artist} = song;
+        const {nombre, img, link, type, artist,background} = song;
 
         const image = document.createElement('img');
         const h3 = document.createElement('h3');
@@ -278,6 +503,15 @@ function browserInput() {
 
 
         div.addEventListener('dblclick', function(){
+            audio.src = link;
+
+            audio.addEventListener('loadedmetadata', function handler() {
+        
+            let songDuration = Math.floor(audio.duration);
+            totalDuration.textContent = `${formatDuration(songDuration)}`;
+        
+            audio.removeEventListener('loadedmetadata', handler);
+            });
 
             btnPlay.textContent = '⏸️'
             
@@ -286,9 +520,146 @@ function browserInput() {
             h3Rep.textContent = nombre;
             repImage.src = img;
             
-            audio.src = link;
             audio.play();
         });
+
+        div.addEventListener('click', function () {
+        console.log(background)
+        centerSectionList.innerHTML = ""; 
+        centerSectionList.classList.add('songs'); // conecta con CSS .songs
+        centerImageHeader.src = img;
+        centerH4Header.textContent = type;
+        centerH1Header.textContent = nombre;
+        centerPHeader.textContent = artist;
+        centerContent.style.background = background;
+        
+
+        if (song.songsList) {
+            song.songsList.forEach((song, i) => {
+    
+            const { nombre, img, artist, type, link } = song;
+    
+            const row = document.createElement('div');
+            row.className = "center-songlist";
+    
+    
+            const songDiv = document.createElement('div');
+            songDiv.className = "song";
+    
+    
+            const index = document.createElement('h1');
+            const cover = document.createElement('img');
+            const details = document.createElement('div');
+            const title = document.createElement('h4');
+            const artists = document.createElement('p');
+            const album = document.createElement('h3');
+            const timeAgo = document.createElement('h3');
+            const duration = document.createElement('p');
+    
+            timeAgo.className = 'h3-center'
+            album.className = 'h3-center'
+            duration.className = 'duration';
+    
+            details.className = "song-details";
+    
+            index.textContent = i + 1;
+            cover.src = img;
+            title.textContent = nombre;
+            artists.textContent = artist;
+            album.textContent = type;
+            timeAgo.textContent = "Hace 20 horas";
+            duration.textContent = "3:20";
+    
+            centerSectionList.appendChild(row);
+            row.appendChild(songDiv);
+    
+            songDiv.appendChild(index);
+            songDiv.appendChild(cover);
+            songDiv.appendChild(details);
+    
+            details.appendChild(title);
+            details.appendChild(artists);
+    
+            songDiv.appendChild(album);
+            songDiv.appendChild(timeAgo);
+            songDiv.appendChild(duration);
+
+            songDiv.addEventListener('dblclick', function(){
+                btnPlay.textContent = '⏸️';
+            
+                singers.textContent = artist
+                h3Rep.textContent = nombre;
+                repImage.src = img;
+            
+                audio.src = link;
+                audio.play();
+            })
+    
+        });
+        } else {
+            
+            const { nombre, img, artist, type, link } = song;
+            console.log(nombre)
+            const row = document.createElement('div');
+            row.className = "center-songlist";
+    
+    
+            const songDiv = document.createElement('div');
+            songDiv.className = "song";
+    
+    
+            const index = document.createElement('h1');
+            const cover = document.createElement('img');
+            const details = document.createElement('div');
+            const title = document.createElement('h4');
+            const artists = document.createElement('p');
+            const album = document.createElement('h3');
+            const timeAgo = document.createElement('h3');
+            const duration = document.createElement('p');
+    
+            timeAgo.className = 'h3-center'
+            album.className = 'h3-center'
+            duration.className = 'duration';
+    
+            details.className = "song-details";
+    
+            index.textContent = 1;
+            cover.src = img;
+            title.textContent = nombre;
+            artists.textContent = artist;
+            album.textContent = type;
+            timeAgo.textContent = "Hace 20 horas";
+            duration.textContent = "3:20";
+    
+            centerSectionList.appendChild(row);
+            row.appendChild(songDiv);
+    
+            songDiv.appendChild(index);
+            songDiv.appendChild(cover);
+            songDiv.appendChild(details);
+    
+            details.appendChild(title);
+            details.appendChild(artists);
+    
+            songDiv.appendChild(album);
+            songDiv.appendChild(timeAgo);
+            songDiv.appendChild(duration);
+
+
+
+            songDiv.addEventListener('dblclick', function(){
+                btnPlay.textContent = '⏸️';
+            
+                singers.textContent = artist
+                h3Rep.textContent = nombre;
+                repImage.src = img;
+            
+                audio.src = link;
+                audio.play();
+            })
+        }
+
+});
     });
 });
 
@@ -370,8 +741,17 @@ btnPlaylist.addEventListener('click', function () {
             div2.appendChild(p);
             
             div.addEventListener('dblclick', function(){
-                btnPlay.textContent = '⏸️';
                 audio.src = link;
+                
+                audio.addEventListener('loadedmetadata', function handler() {
+        
+                let songDuration = Math.floor(audio.duration);
+                totalDuration.textContent = `${formatDuration(songDuration)}`;
+        
+                audio.removeEventListener('loadedmetadata', handler);
+                });
+
+                btnPlay.textContent = '⏸️';
                 audio.play();
             });
         })
@@ -431,8 +811,17 @@ btnAlbums.addEventListener('click', function () {
             div2.appendChild(p);
     
             div.addEventListener('dblclick', function(){
-            btnPlay.textContent = '⏸️';
             audio.src = link;
+
+            audio.addEventListener('loadedmetadata', function handler() {
+        
+            let songDuration = Math.floor(audio.duration);
+            totalDuration.textContent = `${formatDuration(songDuration)}`;
+        
+            audio.removeEventListener('loadedmetadata', handler);
+            });
+            
+            btnPlay.textContent = '⏸️';
             audio.play();
             });
         })
@@ -452,10 +841,10 @@ sidebar.addEventListener('scroll', function() {
 
 function reproducer() {
     if (audio.paused) {
-        btnPlay.textContent = '⏸️'
+        btnPlay.textContent = '⏸️';
         audio.play();
     } else {
-       btnPlay.textContent = '▶️'
+       btnPlay.textContent = '▶️';
            audio.pause();
     }
 
@@ -481,7 +870,13 @@ function nextSong() {
     h3Rep.textContent = nombre;
     singers.textContent = artist;
 
-
+    audio.addEventListener('loadedmetadata', function handler() {
+        
+        let songDuration = Math.floor(audio.duration);
+        totalDuration.textContent = `${formatDuration(songDuration)}`;
+        
+        audio.removeEventListener('loadedmetadata', handler);
+    });
 
     audio.src = next.link;
     audio.play();
@@ -502,6 +897,14 @@ function previousSong() {
     repImage.src = img;
     h3Rep.textContent = nombre;
     singers.textContent = artist;
+
+    audio.addEventListener('loadedmetadata', function handler() {
+        
+        let songDuration = Math.floor(audio.duration);
+        totalDuration.textContent = `${formatDuration(songDuration)}`;
+        
+        audio.removeEventListener('loadedmetadata', handler);
+    });
 
     audio.src = previous.link;
     audio.play();
@@ -535,15 +938,109 @@ audio.addEventListener('ended', function () {
     } else if(random){
         let randomPlay = playlist[Math.floor(Math.random() * playlist.length)].link;
         audio.src = randomPlay;
+        audio.play();
     } else{
         nextSong();
     }
 });
 
-btnRepeat.addEventListener('click', function(){
+btnRandom.addEventListener('click', function(){
     if (random) {
+        btnRandom.style.color = 'white';
         random = false;
     } else {
+        btnRandom.style.color = '#1db954';
         random = true;
     }
 })
+
+function updateProgress() {
+    timeBar.value = audio.currentTime;
+    let songDuration = Math.floor(audio.duration);
+    timeBar.min = 0;
+    timeBar.max = songDuration;
+}
+
+audio.addEventListener('timeupdate', updateProgress)
+
+function updateProgress() {
+    timeBar.value = audio.currentTime;
+    let songDuration = Math.floor(audio.duration);
+    timeBar.min = 0;
+    timeBar.max = songDuration;
+    let currentAudio = Math.floor(audio.currentTime);
+    currentTime.textContent = `${formatDuration(currentAudio)}`;
+}
+audio.addEventListener('timeupdate', updateProgress)
+
+timeBar.addEventListener('input', function(){
+    let songDuration = Math.floor(audio.duration);
+    timeBar.min = 0;
+    timeBar.max = songDuration;
+    let currentAudio = Math.floor(audio.currentTime);
+    currentTime.textContent = `${formatDuration(currentAudio)}`;
+    totalDuration.textContent = `${formatDuration(songDuration)}`;
+    audio.currentTime = timeBar.value;
+});
+
+const topSearch = document.getElementById("browser-top");
+const searchResults = document.getElementById("top-search-results");
+
+topSearch.addEventListener("input", function () {
+        console.log(topSearch.value)
+
+    const query = topSearch.value.trim().toLowerCase();
+
+    if (query === "") {
+        searchResults.style.display = "none";
+        searchResults.innerHTML = "";
+        console.log('primero')
+        return;
+    }
+
+    const filtered = playlist.filter(item =>
+        item.nombre.toLowerCase().includes(query) ||
+        item.artist.toLowerCase().includes(query)
+    );
+
+    searchResults.innerHTML = "";
+
+    if (filtered.length === 0) {
+        searchResults.style.display = "none";
+        console.log('segundo')
+        return;
+    }
+
+    filtered.forEach(item => {
+        const{artist, nombre, img} = item;
+        const div = document.createElement("div");
+        div.className = 'search-result'
+        div.textContent = `${item.nombre} — ${item.artist}`;
+
+        div.addEventListener("click", () => {
+            audio.addEventListener('loadedmetadata', function handler() {
+        
+            let songDuration = Math.floor(audio.duration);
+            totalDuration.textContent = `${formatDuration(songDuration)}`;
+        
+            audio.removeEventListener('loadedmetadata', handler);
+        });
+
+
+            singers.textContent = artist
+            h3Rep.textContent = nombre;
+            repImage.src = img;
+
+            audio.src = item.link;
+            audio.play();
+        });
+
+
+        searchResults.appendChild(div);
+        
+    });
+        console.log('tercero')
+    
+
+    searchResults.style.display = "block";
+});
